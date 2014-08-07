@@ -44,19 +44,41 @@ TRUSTEDKEY_CYGWINPORTS_MD5="4c7904807340411f48f7519173cd600d"
 TRUSTEDKEY_CYGWINPORTS_FPR="45600BB98CA878AA97A70119FF20AF9A66EE1F94"
 TRUSTEDKEY_CYGWINPORTS_URL_LATEST="http://cygwinports.org/ports.gpg"
 
+__check_deps () {
+  for dep in $apt_cyg_DEPS; do
+    if ! command -v "$dep" >/dev/null 2>&1; then
+      [ -z "$FDEPS" ] && FDEPS="$dep" || FDEPS="${FDEPS} $dep"
+    fi
+  done
+  [ -n "$FDEPS" ] && return 1
+  return 0
+}
+
+__deps_helper () {
+  local arch="$(current_cygarch)"
+  local rootp="$(cygpath -wa /)"
+  local fdeps="$(printf "%s$FDEPS" | sed 's/\ /\,/g')"
+  printf "%sError: Missing dependencies = $FDEPS\nTry resolving dependencies using Cygwin setup/installer executable\nExample /path/to/setup-$arch.exe --download --root $rootp --wait --no-shortcuts --packages $fdeps "
+}
+
 # this script requires some packages
+apt_cyg_DEPS="wget tar1 awk gpgv gpg"
+
+__check_deps || { printf "%sError: Missing dependencies = $FDEPS"; exit 1; }
+
+exit 0
 
 WGET="$( which wget 2>/dev/null )"
 TAR="$(  which tar  2>/dev/null )"
 GAWK="$( which awk  2>/dev/null )"
 GPGV="$( which gpgv 2>/dev/null )"
 GPG="$(  which gpg  2>/dev/null )"
-if [ -z "$WGET" -o -z "$TAR" -o -z "$GAWK" ]; then
-  echo You must install wget, tar and gawk to use apt-cyg.
+if [ -z "$WGET" ] &&-o -z "$TAR" -o -z "$GAWK" ]; then
+  echo "You must install wget, tar and gawk to use apt-cyg."
   exit 1
 fi
 
-function usage()
+usage ()
 {
   echo apt-cyg: Installs and removes Cygwin packages.
   echo "  \"apt-cyg install <package names>\" to install packages"
@@ -109,7 +131,7 @@ function usage()
 
 
 
-function version()
+version ()
 {
   echo "apt-cyg version 0.57"
   echo "Written by Stephen Jungels"
@@ -117,17 +139,17 @@ function version()
   echo "Copyright (c) 2005-9 Stephen Jungels.  Released under the GPL."
 }
 
-function current_cygarch ()
+current_cygarch ()
 {
   arch | sed -e 's/^i686$/x86/g'
 }
 
-function mirror_to_mirrordir ()
+mirror_to_mirrordir ()
 {
   echo "$1" | sed -e "s/:/%3a/g" -e "s:/:%2f:g"
 }
 
-function findworkspace()
+findworkspace ()
 {
   # default working directory, mirror and architecture
 
@@ -157,7 +179,7 @@ function findworkspace()
   fetch_trustedkeys
 }
 
-function download_and_verify ()
+download_and_verify ()
 {
   "${WGET[@]}" -N "$1" || return 1
   [ -e "${1##*/}" ] || return 1
@@ -168,7 +190,7 @@ function download_and_verify ()
   return
 }
 
-function files_backup ()
+files_backup ()
 {
   locale file
   for file; do
@@ -177,7 +199,7 @@ function files_backup ()
   done
 }
 
-function files_restore ()
+files_restore ()
 {
   locale file
   for file; do
@@ -186,7 +208,7 @@ function files_restore ()
   done
 }
 
-function files_backup_clean ()
+files_backup_clean ()
 {
   locale file
   for file; do
@@ -194,7 +216,7 @@ function files_backup_clean ()
   done
 }
 
-function setupini_download ()
+setupini_download ()
 {
   local BASEDIR="$cache/$mirrordir/$arch"
   mkdir -p "$BASEDIR" || { echo -e "\e[31;1mError:\e[30;0m mkdir \"$BASEDIR\" failed."; exit 1; }
@@ -219,12 +241,12 @@ function setupini_download ()
   return 1
 }
 
-function getsetup ()
+getsetup ()
 {
   setupini_download || return 1
 }
 
-function checkpackages()
+checkpackages ()
 {
   if [ $# -eq 0 ]; then
     echo Nothing to do, exiting
@@ -233,7 +255,7 @@ function checkpackages()
 }
 
 # Usage: getrootdir arch
-function getrootdir ()
+getrootdir ()
 {
   case "$1" in
     x86)
@@ -246,7 +268,7 @@ function getrootdir ()
 }
 
 # Usage: charch arch apt-cyg_parms ...
-function charch ()
+charch ()
 {
   local rootdir
   if [ "$(current_cygarch)" != "$1" ]; then
@@ -262,7 +284,7 @@ function charch ()
   fi
 }
 
-function init_gnupg ()
+init_gnupg ()
 {
   [ -z "$GPG" ] && return
   export GNUPGHOME="$cache/.apt-cyg"
@@ -276,7 +298,7 @@ function init_gnupg ()
 }
 
 # Usage: ask_user "question?" (optional recognition of YES_TO_ALL=true auto yes)
-function ask_user ()
+ask_user ()
 {
   while true; do
     [ -n "$2" ] && { local pmt="$2"; local def=; }
@@ -296,7 +318,7 @@ function ask_user ()
 # Reference:
 # https://www.gnu.org/software/wget/manual/wget.html#Exit-Status
 # Usage: wget-exitstatus EXITSTATUS
-function wget-exitstatus ()
+wget-exitstatus ()
 {
   case $1 in
   0) echo "No problems occurred.";;
@@ -313,7 +335,7 @@ function wget-exitstatus ()
 }
 
 # Usage: wget_return_case_md5sum returncode
-function wget_return_case_md5sum ()
+wget_return_case_md5sum ()
 {
   case "$1" in
     0) return 0 ;;
@@ -329,7 +351,7 @@ function wget_return_case_md5sum ()
 }
 
 # Usage: wget_and_check_md5sum label hash url file
-function wget_and_check_md5sum ()
+wget_and_check_md5sum ()
 {
   local LABEL="$1"
   local MD5="$2"
@@ -344,7 +366,7 @@ function wget_and_check_md5sum ()
   echo "$LABEL: OK"
 }
 
-function fetch_trustedkeys ()
+fetch_trustedkeys ()
 {
   [ -z "$GPG" ] && return
   local i
@@ -409,7 +431,7 @@ function fetch_trustedkeys ()
 }
 
 # Usage: verify_signatures files ...
-function verify_signatures ()
+verify_signatures ()
 {
   while [ $# -gt 0 ]; do
     if ! "${GPGV[@]}" "${GPG_KEYRING[@]}" "$1"; then
@@ -421,7 +443,7 @@ function verify_signatures ()
 }
 
 # Usage: apt-cyg-key-add pkey ...
-function apt-cyg-key-add ()
+apt-cyg-key-add ()
 {
   [ -z "$GPG" ] && { echo -e "\e[31;1mError:\e[30;0m GnuPG is not installed. Prease install gnupg package"; exit 1; }
   local pkeys
@@ -435,7 +457,7 @@ function apt-cyg-key-add ()
 }
 
 # Usage: apt-cyg-key-add keyid ...
-function apt-cyg-key-del ()
+apt-cyg-key-del ()
 {
   [ -z "$GPG" ] && { echo -e "\e[31;1mError:\e[30;0m GnuPG is not installed. Prease install gnupg package"; exit 1; }
   local keyid
@@ -445,21 +467,21 @@ function apt-cyg-key-del ()
   done
 }
 
-function apt-cyg-key-list ()
+apt-cyg-key-list ()
 {
   [ -z "$GPG" ] && { echo -e "\e[31;1mError:\e[30;0m GnuPG is not installed. Prease install gnupg package"; exit 1; }
   findworkspace
   "${GPG[@]}" --list-keys
 }
 
-function apt-cyg-key-finger ()
+apt-cyg-key-finger ()
 {
   [ -z "$GPG" ] && { echo -e "\e[31;1mError:\e[30;0m GnuPG is not installed. Prease install gnupg package"; exit 1; }
   findworkspace
   "${GPG[@]}" --fingerprint
 }
 
-function apt-cyg-pathof ()
+apt-cyg-pathof ()
 {
   findworkspace >& /dev/null
   while [ "$#" -gt 0 ]; do
@@ -470,14 +492,14 @@ function apt-cyg-pathof ()
       cache/mirrordir)  echo "$cache/$mirrordir" ;;
       setup.ini)        echo "$cache/$mirrordir/$arch/setup.ini" ;;
       *)
-        echo -e "\e[31;1mError:\e[30;0m in function $FUNCNAME: unknown parameter: $1"
+        echo -e "\e[31;1mError:\e[30;0m in $FUNCNAME: unknown parameter: $1"
         exit 1
     esac
     shift
   done
 }
 
-function apt-cyg-upgrade-self ()
+apt-cyg-upgrade-self ()
 {
   local basedir="$(dirname "$(readlink -f "$(which "$0")")")"
   if [ ! -d "$basedir/.git" ]; then
@@ -489,7 +511,7 @@ function apt-cyg-upgrade-self ()
   popd
 }
 
-function proxy_auto ()
+proxy_auto ()
 {
   local proxy=$("${WGET[@]}" --no-proxy -q -O - wpad/wpad.dat \
   | grep PROXY \
@@ -498,21 +520,21 @@ function proxy_auto ()
   [ -n "$proxy" ] && proxy_set "$proxy"
 }
 
-function proxy_set ()
+proxy_set ()
 {
   export http_proxy="$1"
   export https_proxy="$1"
   export ftp_proxy="$1"
 }
 
-function proxy_unset ()
+proxy_unset ()
 {
   export -n http_proxy
   export -n https_proxy
   export -n ftp_proxy
 }
 
-function proxy_setup ()
+proxy_setup ()
 {
   case "$OPT_PROXY" in
   auto)
@@ -535,7 +557,7 @@ function proxy_setup ()
 # https://sourceware.org/cgi-bin/cvsweb.cgi/setup/package_db.cc?cvsroot=cygwin-apps
 PACKAGE_DB="/etc/setup/installed.db"
 
-function package_db-version_check ()
+package_db-version_check ()
 {
   local ver2hdr="INSTALLED.DB 2"
   
@@ -551,7 +573,7 @@ function package_db-version_check ()
 }
 
 # Usage: package_db-is_registered PKGNAME
-function package_db-is_registered ()
+package_db-is_registered ()
 {
   package_db-version_check
   
@@ -561,7 +583,7 @@ function package_db-is_registered ()
   ' PKGNAME="$1" "${PACKAGE_DB}"
 }
 
-function package_db-list ()
+package_db-list ()
 {
   package_db-version_check
   
@@ -569,14 +591,14 @@ function package_db-list ()
 }
 
 # Usage: package_db-register PKGNAME PKGFILE
-function package_db-register ()
+package_db-register ()
 {
   local work="/tmp/apt-cyg.$$.${PACKAGE_DB##*/}"
   
   package_db-version_check
   
   awk '
-  function register() {print PKGNAME " " PKGFILE " 0"; registered = 1;}
+  register() {print PKGNAME " " PKGFILE " 0"; registered = 1;}
   !registered && PKGNAME < $1 && NF != 2 {register()}
   {print $0}
   END {if (!registered) register()}
@@ -587,7 +609,7 @@ function package_db-register ()
 }
 
 # Usage: package_db-unregister PKGNAME
-function package_db-unregister ()
+package_db-unregister ()
 {
   local work="/tmp/apt-cyg.$$.${PACKAGE_DB##*/}"
   
@@ -600,7 +622,7 @@ function package_db-unregister ()
 }
 
 # Usage: join FS fields ...
-function join ()
+join ()
 {
   local FS="$1" field="" result="" sep=""
   shift
@@ -617,13 +639,13 @@ function join ()
 #   ROOTPKGS is root package names to check dependency.
 # Return:
 #   package_name available shallow_depth deep_depth
-function dep_check ()
+dep_check ()
 {
   awk \
   '
-    function min(x,y) {return x < y ? x : y}
-    function max(x,y) {return x < y ? y : x}
-    function update_result(dir, rootpkg, pkg, depth, _, i) {
+    min(x,y) {return x < y ? x : y}
+    max(x,y) {return x < y ? y : x}
+    update_result(dir, rootpkg, pkg, depth, _, i) {
       if (0 + result[rootpkg, pkg, "deep"]) {
         result[rootpkg, pkg, "shallow"] = min(depth, result[rootpkg, pkg, "shallow"]);
         result[rootpkg, pkg, "deep"]    = max(depth, result[rootpkg, pkg, "deep"]);
@@ -662,8 +684,8 @@ function dep_check ()
   ' \
   DIR="$1" ROOTPKGS="$(join $'\x1c' "${@:2}")" "$(apt-cyg-pathof "setup.ini")" \
   | awk '
-  function min(x,y) {return x < y ? x : y}
-  function max(x,y) {return x < y ? y : x}
+  min(x,y) {return x < y ? x : y}
+  max(x,y) {return x < y ? y : x}
   {
     packages[$1] = pkg = $1;
     status[pkg, "available"] = $2;
@@ -682,21 +704,21 @@ function dep_check ()
   ' | sort -nrk4
 }
 
-function apt-cyg-depends ()
+apt-cyg-depends ()
 {
   local pkg
   printf "%-40s %s\t%s\t%s\n" "PKGNAME" "AVAIL" "SHALLOW" "DEEP"
   dep_check depends "$@"
 }
 
-function apt-cyg-rdepends ()
+apt-cyg-rdepends ()
 {
   local pkg
   printf "%-40s %s\t%s\t%s\n" "PKGNAME" "AVAIL" "SHALLOW" "DEEP"
   dep_check rdepends "$@"
 }
 
-function apt-cyg-completion-install ()
+apt-cyg-completion-install ()
 {
   if [ ! -d "/etc/bash_completion.d" ]; then
     echo -e "\e[31;1mError:\e[30;0m /etc/bash_completion.d is not exist."
@@ -712,10 +734,10 @@ function apt-cyg-completion-install ()
   local SCRIPTFILE="$(realpath "$(which apt-cyg)")"
   local SCRIPTDIR="${SCRIPTNAME%/*}"
   
-  readarray -t -O ${#SUBCMDS[@]} SUBCMDS < <(grep "^function " "$SCRIPTFILE" | awk 'match($2, /apt-cyg-([-_0-9A-Za-z]+)/,m){print m[1]}')
+  readarray -t -O ${#SUBCMDS[@]} SUBCMDS < <(grep "^" "$SCRIPTFILE" | awk 'match($2, /apt-cyg-([-_0-9A-Za-z]+)/,m){print m[1]}')
   readarray -t -O ${#OPTIONS[@]} OPTIONS < <(
     awk '
-    /^function *parse_args *\(\)/ {proc=1}
+    /^*parse_args *\(\)/ {proc=1}
     /^} *# *\/parse_args( |$)/     {proc=0}
     proc && match($0, /^ *(-[^()*]+)\)/, m) {
       split(m[1], x, "|");
@@ -726,7 +748,7 @@ function apt-cyg-completion-install ()
 cat <<-EOD > /etc/bash_completion.d/apt-cyg
 # bash completion for apt-cyg
 
-function __apt-cyg ()
+__apt-cyg ()
 {
   local cur prev getsubcmd subcmd
   
@@ -798,7 +820,7 @@ EOD
   echo "A bash completion /etc/bash_completion.d/apt-cyg is installed"
 }
 
-function apt-cyg-completion-uninstall ()
+apt-cyg-completion-uninstall ()
 {
   if [ ! -f /etc/bash_completion.d/apt-cyg ]; then
     echo -e "\e[31;1mError:\e[30;0m /etc/bash_completion.d/apt-cyg is not exist."
@@ -808,7 +830,7 @@ function apt-cyg-completion-uninstall ()
   echo "A bash completion /etc/bash_completion.d/apt-cyg is uninstalled"
 }
 
-function apt-cyg-mirrors-list ()
+apt-cyg-mirrors-list ()
 {
   awk '
     /^[^ \t]+/ {section = $1}
@@ -816,7 +838,7 @@ function apt-cyg-mirrors-list ()
   ' "/etc/setup/setup.rc"
 }
 
-function apt-cyg-benchmark-mirrors
+apt-cyg-benchmark-mirrors
 {
   local mirror result exitcode
   for mirror; do
@@ -830,7 +852,7 @@ function apt-cyg-benchmark-mirrors
   done
 }
 
-function apt-cyg-benchmark-parallel-mirrors
+apt-cyg-benchmark-parallel-mirrors
 {
   local result="$(mktemp "${SCRIPTNAME}.$$.XXXXX")"
   local mirror
@@ -843,7 +865,7 @@ function apt-cyg-benchmark-parallel-mirrors
 
 }
 
-function apt-cyg-benchmark-parallel-mirrors-list
+apt-cyg-benchmark-parallel-mirrors-list
 {
   local mirrors
   readarray -t mirrors < <(apt-cyg-mirrors-list)
@@ -859,14 +881,14 @@ function apt-cyg-benchmark-parallel-mirrors-list
 
 LESSER_PARALLEL_MAX_JOBS=${LESSER_PARALLEL_MAX_JOBS:-8}
 
-function lesser-parallel-get-jobs-count ()
+lesser-parallel-get-jobs-count ()
 {
   jobs -l >/dev/null
   jobs -l | wc -l
 }
 
 # Usage: lesser-parallel-restrict-jobs-count MAXJOBS
-function lesser-parallel-restrict-jobs-count ()
+lesser-parallel-restrict-jobs-count ()
 {
   while [ $(lesser-parallel-get-jobs-count) -ge $1 ]; do
     sleep 0.2
@@ -874,7 +896,7 @@ function lesser-parallel-restrict-jobs-count ()
 }
 
 # Usage: lesser-parallel [command [arguments]] < list_ot_arguments
-function lesser-parallel ()
+lesser-parallel ()
 {
   local cmd arg lines line basename ext PARALLEL_SEQ=1
   readarray -t lines
@@ -921,7 +943,7 @@ function lesser-parallel ()
 
 #/Lesser Parallel for Embedding
 
-function apt-cyg-help ()
+apt-cyg-help ()
 {
   usage
 }
@@ -941,7 +963,7 @@ YES_TO_ALL=false
 INITIAL_ARGS=( "$@" )
 ARGS=()
 
-function parse_args ()
+parse_args ()
 {
 local unknown_option
 
@@ -1099,7 +1121,7 @@ done
 
 
 
-function apt-cyg-update ()
+apt-cyg-update ()
 {
 
     findworkspace
@@ -1108,7 +1130,7 @@ function apt-cyg-update ()
 }
 
 
-function apt-cyg-show ()
+apt-cyg-show ()
 {
 
     echo 1>&2 The following packages are installed:
@@ -1117,7 +1139,7 @@ function apt-cyg-show ()
 }
 
 
-function apt-cyg-find ()
+apt-cyg-find ()
 {
     local pkg
 
@@ -1139,7 +1161,7 @@ function apt-cyg-find ()
 }
 
 
-function apt-cyg-describe ()
+apt-cyg-describe ()
 {
     local pkg
 
@@ -1156,7 +1178,7 @@ function apt-cyg-describe ()
 }
 
 
-function apt-cyg-packageof ()
+apt-cyg-packageof ()
 {
     local pkg
     local manifest
@@ -1179,7 +1201,7 @@ function apt-cyg-packageof ()
 }
 
 
-function apt-cyg-install ()
+apt-cyg-install ()
 {
     local pkg
     local script
@@ -1284,7 +1306,7 @@ function apt-cyg-install ()
 }
 
 
-function apt-cyg-remove()
+apt-cyg-remove ()
 {
     local pkg
     local req
@@ -1326,7 +1348,7 @@ function apt-cyg-remove()
 
 }
 
-function invoke_subcommand ()
+invoke_subcommand ()
 {
     local SUBCOMMAND="${@:1:1}"
     local ARGS=( "${@:2}" )
