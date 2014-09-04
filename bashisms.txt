@@ -2,267 +2,219 @@ possible bashism in apt-cyg line 162 (bash arrays, ${name[0|*|@]}):
   "${WGET[@]}" -N "$1" || return 1
 possible bashism in apt-cyg line 165 (bash arrays, ${name[0|*|@]}):
     "${WGET[@]}" -N "${1}.sig" || return 1
-possible bashism in apt-cyg line 200 (echo -e):
+possible bashism in apt-cyg line 196 (echo -e):
   mkdir -p "$BASEDIR" || { echo -e "\e[31;1mError:\e[30;0m mkdir \"$BASEDIR\" failed."; exit 1; }
-possible bashism in apt-cyg line 204 ((push|pop)d):
+possible bashism in apt-cyg line 200 ((push|pop)d):
   pushd "$BASEDIR"
-possible bashism in apt-cyg line 212 ((push|pop)d):
+possible bashism in apt-cyg line 207 ((push|pop)d):
     popd
-possible bashism in apt-cyg line 217 ((push|pop)d):
+possible bashism in apt-cyg line 212 ((push|pop)d):
   popd
-possible bashism in apt-cyg line 218 (echo -e):
+possible bashism in apt-cyg line 213 (echo -e):
   echo -e "\e[31;1mError:\e[30;0m updating setup.ini, reverting."
-possible bashism in apt-cyg line 240 ('$(< foo)' should be '$(cat foo)'):
-      cygpath -u "$(< /proc/registry32/HKEY_LOCAL_MACHINE/SOFTWARE/Cygwin/setup/rootdir)" ;;
-possible bashism in apt-cyg line 242 ('$(< foo)' should be '$(cat foo)'):
-      cygpath -u "$(< /proc/registry64/HKEY_LOCAL_MACHINE/SOFTWARE/Cygwin/setup/rootdir)" ;;
-possible bashism in apt-cyg line 244 (echo -e):
-      echo -e "\e[31;1mError:\e[30;0m unknown arch $1" >&2 ;;
-possible bashism in apt-cyg line 253 (echo -e):
+possible bashism in apt-cyg line 231 ('$(< foo)' should be '$(cat foo)'):
+    x86)    cygpath -u "$(< /proc/registry32/HKEY_LOCAL_MACHINE/SOFTWARE/Cygwin/setup/rootdir)" ;;
+possible bashism in apt-cyg line 232 ('$(< foo)' should be '$(cat foo)'):
+    x86_64) cygpath -u "$(< /proc/registry64/HKEY_LOCAL_MACHINE/SOFTWARE/Cygwin/setup/rootdir)" ;;
+possible bashism in apt-cyg line 241 (echo -e):
     echo -e "\e[32;1mcharch to:\e[30;0m $1"
-possible bashism in apt-cyg line 271 (echo -e):
+possible bashism in apt-cyg line 258 (echo -e):
       echo -e "\e[31;1mError:\e[30;0m cannot initialize directory $GNUPGHOME"
-possible bashism in apt-cyg line 285 (echo -e):
+possible bashism in apt-cyg line 271 (echo -e):
     [ -z "$def" ] && { echo -ne "$1 ";read -p "[$pmt] " RPY; }
-possible bashism in apt-cyg line 285 (read with option other than -r):
+possible bashism in apt-cyg line 271 (read with option other than -r):
     [ -z "$def" ] && { echo -ne "$1 ";read -p "[$pmt] " RPY; }
-possible bashism in apt-cyg line 299 (function names should only contain [a-z0-9_]):
-wget-exitstatus ()
-possible bashism in apt-cyg line 323 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 307 (bash arrays, ${name[0|*|@]}):
        "${WGET[@]}" --no-check-certificate "$URL" -O "$FILE"
-possible bashism in apt-cyg line 338 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 321 (bash arrays, ${name[0|*|@]}):
   "${WGET[@]}" "$URL" -O "$FILE"
-possible bashism in apt-cyg line 340 (should be >word 2>&1):
+possible bashism in apt-cyg line 323 (should be >word 2>&1):
   if ! { echo "$MD5 *$FILE" | md5sum -c >& /dev/null; } then
-possible bashism in apt-cyg line 353 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 335 (bash arrays, ${name[0|*|@]}):
   for i in "${TRUSTEDKEYS[@]}"; do
-possible bashism in apt-cyg line 360 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 342 (bash arrays, ${name[0|*|@]}):
     if [ -z "$force_fetch_trustedkeys" ] && { "${GPG[@]}" --fingerprint --with-colons | grep -q "$FPR"; } then
-possible bashism in apt-cyg line 365 (should be VAR="${VAR}foo"):
+possible bashism in apt-cyg line 347 (should be VAR="${VAR}foo"):
       CASE+="$?"
-possible bashism in apt-cyg line 367 (should be VAR="${VAR}foo"):
+possible bashism in apt-cyg line 349 (should be VAR="${VAR}foo"):
       CASE+="-"
-possible bashism in apt-cyg line 371 (should be VAR="${VAR}foo"):
+possible bashism in apt-cyg line 353 (should be VAR="${VAR}foo"):
       CASE+="$?"
-possible bashism in apt-cyg line 373 (should be VAR="${VAR}foo"):
+possible bashism in apt-cyg line 355 (should be VAR="${VAR}foo"):
       CASE+="-"
-possible bashism in apt-cyg line 377 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 359 (bash arrays, ${name[0|*|@]}):
         "${GPG[@]}" --import "$FILE"
-possible bashism in apt-cyg line 381 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 363 (bash arrays, ${name[0|*|@]}):
         "${GPG[@]}" --import "$FILE"
-possible bashism in apt-cyg line 384 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 366 (bash arrays, ${name[0|*|@]}):
         "${GPG[@]}" --import "$FILE_LATEST"
-possible bashism in apt-cyg line 387 (echo -e):
+possible bashism in apt-cyg line 369 (echo -e):
         echo -e "\e[31;1mError:\e[30;0m ${LABEL} has miss configuration."
-possible bashism in apt-cyg line 391 (echo -e):
+possible bashism in apt-cyg line 373 (echo -e):
         echo -e "\e[31;1mError:\e[30;0m Could not download ${LABEL}."
-possible bashism in apt-cyg line 395 (echo -e):
+possible bashism in apt-cyg line 377 (echo -e):
         echo -e "\e[31;1mError:\e[30;0m ${LABEL} has been updated, maybe. But sometimes it may has been cracked. Be careful !!!"
-possible bashism in apt-cyg line 399 (echo -e):
+possible bashism in apt-cyg line 381 (echo -e):
         echo -e "\e[31;1mError:\e[30;0m ${LABEL} has been cracked, maybe"
-possible bashism in apt-cyg line 403 (echo -e):
+possible bashism in apt-cyg line 385 (echo -e):
         echo -e "\e[31;1mError:\e[30;0m ${LABEL} has no URL."
-possible bashism in apt-cyg line 415 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 396 (bash arrays, ${name[0|*|@]}):
     if ! "${GPGV[@]}" "${GPG_KEYRING[@]}" "$1"; then
-possible bashism in apt-cyg line 416 (echo -e):
+possible bashism in apt-cyg line 397 (echo -e):
       echo -e "\e[31;1mError:\e[30;0m BAD signature: $1"
-possible bashism in apt-cyg line 424 (function names should only contain [a-z0-9_]):
-apt-cyg-key-add ()
-possible bashism in apt-cyg line 426 (echo -e):
-  [ -z "$GPG" ] && { echo -e "\e[31;1mError:\e[30;0m GnuPG is not installed. Prease install gnupg package"; exit 1; }
-possible bashism in apt-cyg line 429 (should be VAR="${VAR}foo"):
+possible bashism in apt-cyg line 406 (echo -e):
+    echo -e "\e[31;1mError:\e[30;0m GnuPG is not installed. Prease install gnupg package"
+possible bashism in apt-cyg line 416 (should be VAR="${VAR}foo"):
     pkeys+=( "$(cygpath -a "$pkey" )" )
-possible bashism in apt-cyg line 432 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 419 (bash arrays, ${name[0|*|@]}):
   for pkey in "${pkeys[@]}"; do
-possible bashism in apt-cyg line 433 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 420 (bash arrays, ${name[0|*|@]}):
     "${GPG[@]}" --import "$pkey"
-possible bashism in apt-cyg line 438 (function names should only contain [a-z0-9_]):
-apt-cyg-key-del ()
-possible bashism in apt-cyg line 440 (echo -e):
-  [ -z "$GPG" ] && { echo -e "\e[31;1mError:\e[30;0m GnuPG is not installed. Prease install gnupg package"; exit 1; }
-possible bashism in apt-cyg line 444 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 430 (bash arrays, ${name[0|*|@]}):
     "${GPG[@]}" --batch --yes --delete-key "$keyid"
-possible bashism in apt-cyg line 448 (function names should only contain [a-z0-9_]):
-apt-cyg-key-list ()
-possible bashism in apt-cyg line 450 (echo -e):
-  [ -z "$GPG" ] && { echo -e "\e[31;1mError:\e[30;0m GnuPG is not installed. Prease install gnupg package"; exit 1; }
-possible bashism in apt-cyg line 452 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 437 (bash arrays, ${name[0|*|@]}):
   "${GPG[@]}" --list-keys
-possible bashism in apt-cyg line 455 (function names should only contain [a-z0-9_]):
-apt-cyg-key-finger ()
-possible bashism in apt-cyg line 457 (echo -e):
-  [ -z "$GPG" ] && { echo -e "\e[31;1mError:\e[30;0m GnuPG is not installed. Prease install gnupg package"; exit 1; }
-possible bashism in apt-cyg line 459 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 443 (bash arrays, ${name[0|*|@]}):
   "${GPG[@]}" --fingerprint
-possible bashism in apt-cyg line 462 (function names should only contain [a-z0-9_]):
-apt-cyg-pathof ()
-possible bashism in apt-cyg line 464 (should be >word 2>&1):
+possible bashism in apt-cyg line 447 (should be >word 2>&1):
   findworkspace >& /dev/null
-possible bashism in apt-cyg line 473 ($FUNCNAME):
-        echo -e "\e[31;1mError:\e[30;0m in $FUNCNAME: unknown parameter: $1"
-possible bashism in apt-cyg line 473 (echo -e):
-        echo -e "\e[31;1mError:\e[30;0m in $FUNCNAME: unknown parameter: $1"
-possible bashism in apt-cyg line 480 (function names should only contain [a-z0-9_]):
-apt-cyg-upgrade-self ()
-possible bashism in apt-cyg line 484 (echo -e):
+possible bashism in apt-cyg line 456 ($FUNCNAME):
+        echo -e "\e[31;1mError:\e[30;0m in function $FUNCNAME: unknown parameter: $1"
+possible bashism in apt-cyg line 456 (echo -e):
+        echo -e "\e[31;1mError:\e[30;0m in function $FUNCNAME: unknown parameter: $1"
+possible bashism in apt-cyg line 466 (echo -e):
     echo -e "\e[31;1mError:\e[30;0m apt-get is not under the git version control."
-possible bashism in apt-cyg line 487 ((push|pop)d):
+possible bashism in apt-cyg line 469 ((push|pop)d):
   pushd "$basedir"
-possible bashism in apt-cyg line 489 ((push|pop)d):
+possible bashism in apt-cyg line 471 ((push|pop)d):
   popd
-possible bashism in apt-cyg line 496 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 477 (bash arrays, ${name[0|*|@]}):
   local proxy=$("${WGET[@]}" --no-proxy -q -O - wpad/wpad.dat \
   | grep PROXY \
   | sed -e 's/^.*PROXY\s*\([^"]*\).*$/http:\/\/\1/g')
-possible bashism in apt-cyg line 510 (export only takes -p as an option):
+possible bashism in apt-cyg line 491 (export only takes -p as an option):
   export -n http_proxy
-possible bashism in apt-cyg line 511 (export only takes -p as an option):
+possible bashism in apt-cyg line 492 (export only takes -p as an option):
   export -n https_proxy
-possible bashism in apt-cyg line 512 (export only takes -p as an option):
+possible bashism in apt-cyg line 493 (export only takes -p as an option):
   export -n ftp_proxy
-possible bashism in apt-cyg line 538 (function names should only contain [a-z0-9_]):
-package_db-version_check ()
-possible bashism in apt-cyg line 543 (echo -e):
+possible bashism in apt-cyg line 513 (function names should only contain [a-z0-9_]):
+package_db-version_check () {
+possible bashism in apt-cyg line 516 (echo -e):
     echo -e "\e[33;1mWarning:\e[30;0m ${PACKAGE_DB} is not version 2. The first line is below:"
-possible bashism in apt-cyg line 544 (echo -e):
+possible bashism in apt-cyg line 517 (echo -e):
     echo -e "$(head -n1 "${PACKAGE_DB}")\n" >&2
-possible bashism in apt-cyg line 548 (echo -e):
+possible bashism in apt-cyg line 520 (echo -e):
       echo -e "The above line looks like version header, but it is not the first line.\n" >&2
+possible bashism in apt-cyg line 526 (function names should only contain [a-z0-9_]):
+package_db-is_registered () {
+possible bashism in apt-cyg line 534 (function names should only contain [a-z0-9_]):
+package_db-list () {
+possible bashism in apt-cyg line 540 (function names should only contain [a-z0-9_]):
+package_db-register () {
 possible bashism in apt-cyg line 554 (function names should only contain [a-z0-9_]):
-package_db-is_registered ()
-possible bashism in apt-cyg line 564 (function names should only contain [a-z0-9_]):
-package_db-list ()
-possible bashism in apt-cyg line 572 (function names should only contain [a-z0-9_]):
-package_db-register ()
-possible bashism in apt-cyg line 590 (function names should only contain [a-z0-9_]):
-package_db-unregister ()
-possible bashism in apt-cyg line 685 (function names should only contain [a-z0-9_]):
-apt-cyg-depends ()
-possible bashism in apt-cyg line 692 (function names should only contain [a-z0-9_]):
-apt-cyg-rdepends ()
-possible bashism in apt-cyg line 699 (function names should only contain [a-z0-9_]):
-apt-cyg-completion-install ()
-possible bashism in apt-cyg line 702 (echo -e):
+package_db-unregister () {
+possible bashism in apt-cyg line 644 (function names should only contain [a-z0-9_]):
+apt-cyg-depends () {
+possible bashism in apt-cyg line 650 (function names should only contain [a-z0-9_]):
+apt-cyg-rdepends () {
+possible bashism in apt-cyg line 659 (echo -e):
     echo -e "\e[31;1mError:\e[30;0m /etc/bash_completion.d is not exist."
-possible bashism in apt-cyg line 706 (echo -e):
+possible bashism in apt-cyg line 663 (echo -e):
     echo -e "\e[31;1mError:\e[30;0m bash-completion is not installed."
-possible bashism in apt-cyg line 715 (bash arrays, ${name[0|*|@]}):
-  readarray -t -O ${#SUBCMDS[@]} SUBCMDS < <(grep "^" "$SCRIPTFILE" | awk 'match($2, /apt-cyg-([-_0-9A-Za-z]+)/,m){print m[1]}')
-possible bashism in apt-cyg line 715 (readarray):
-  readarray -t -O ${#SUBCMDS[@]} SUBCMDS < <(grep "^" "$SCRIPTFILE" | awk 'match($2, /apt-cyg-([-_0-9A-Za-z]+)/,m){print m[1]}')
-possible bashism in apt-cyg line 715 (<() process substituion):
-  readarray -t -O ${#SUBCMDS[@]} SUBCMDS < <(grep "^" "$SCRIPTFILE" | awk 'match($2, /apt-cyg-([-_0-9A-Za-z]+)/,m){print m[1]}')
-possible bashism in apt-cyg line 716 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 672 (bash arrays, ${name[0|*|@]}):
+  readarray -t -O ${#SUBCMDS[@]} SUBCMDS < <(grep "^function" "$SCRIPTFILE" | awk 'match($2, /apt-cyg-([-_0-9A-Za-z]+)/,m){print m[1]}')
+possible bashism in apt-cyg line 672 (readarray):
+  readarray -t -O ${#SUBCMDS[@]} SUBCMDS < <(grep "^function" "$SCRIPTFILE" | awk 'match($2, /apt-cyg-([-_0-9A-Za-z]+)/,m){print m[1]}')
+possible bashism in apt-cyg line 672 (<() process substituion):
+  readarray -t -O ${#SUBCMDS[@]} SUBCMDS < <(grep "^function" "$SCRIPTFILE" | awk 'match($2, /apt-cyg-([-_0-9A-Za-z]+)/,m){print m[1]}')
+possible bashism in apt-cyg line 673 (bash arrays, ${name[0|*|@]}):
   readarray -t -O ${#OPTIONS[@]} OPTIONS < <(
-possible bashism in apt-cyg line 716 (readarray):
+possible bashism in apt-cyg line 673 (readarray):
   readarray -t -O ${#OPTIONS[@]} OPTIONS < <(
-possible bashism in apt-cyg line 801 (function names should only contain [a-z0-9_]):
-apt-cyg-completion-uninstall ()
-possible bashism in apt-cyg line 804 (echo -e):
+possible bashism in apt-cyg line 759 (echo -e):
     echo -e "\e[31;1mError:\e[30;0m /etc/bash_completion.d/apt-cyg is not exist."
-possible bashism in apt-cyg line 811 (function names should only contain [a-z0-9_]):
-apt-cyg-mirrors-list ()
-possible bashism in apt-cyg line 826 (echo -e):
-      echo -e "\e[33;1mWarning:\e[30;0m benchmark failed with wget exitcode $exitcode: $(wget-exitstatus $exitcode): $1" >&2
-possible bashism in apt-cyg line 829 (echo -e):
+possible bashism in apt-cyg line 779 (echo -e):
+      echo -e "\e[33;1mWarning:\e[30;0m benchmark failed with wget exitcode $exitcode: $(wget_exitstatus $exitcode): $1" >&2
+possible bashism in apt-cyg line 782 (echo -e):
     echo -e "$(echo "$result" | grep real | cut -f 2 | tr -d "\n")\t${mirror}"
-possible bashism in apt-cyg line 849 (readarray):
-  readarray -t mirrors < <(apt-cyg-mirrors-list)
-possible bashism in apt-cyg line 849 (<() process substituion):
-  readarray -t mirrors < <(apt-cyg-mirrors-list)
-possible bashism in apt-cyg line 850 (bash arrays, ${name[0|*|@]}):
-  apt-cyg-benchmark-parallel-mirrors "${mirrors[@]}"
-possible bashism in apt-cyg line 862 (function names should only contain [a-z0-9_]):
-lesser-parallel-get-jobs-count ()
-possible bashism in apt-cyg line 864 (jobs):
+possible bashism in apt-cyg line 797 (function names should only contain [a-z0-9_]):
+apt_cyg_benchmark_parallel_mirrors-list () {
+possible bashism in apt-cyg line 799 (readarray):
+  readarray -t mirrors < <(apt_cyg_mirrors_list)
+possible bashism in apt-cyg line 799 (<() process substituion):
+  readarray -t mirrors < <(apt_cyg_mirrors_list)
+possible bashism in apt-cyg line 800 (bash arrays, ${name[0|*|@]}):
+  apt_cyg_benchmark_parallel_mirrors "${mirrors[@]}"
+possible bashism in apt-cyg line 813 (jobs):
   jobs -l >/dev/null
-possible bashism in apt-cyg line 865 (jobs):
+possible bashism in apt-cyg line 814 (jobs):
   jobs -l | wc -l
-possible bashism in apt-cyg line 869 (function names should only contain [a-z0-9_]):
-lesser-parallel-restrict-jobs-count ()
-possible bashism in apt-cyg line 872 (sleep only takes one integer):
+possible bashism in apt-cyg line 820 (sleep only takes one integer):
     sleep 0.2
-possible bashism in apt-cyg line 877 (function names should only contain [a-z0-9_]):
-lesser-parallel ()
-possible bashism in apt-cyg line 880 (readarray):
+possible bashism in apt-cyg line 827 (readarray):
   readarray -t lines
-possible bashism in apt-cyg line 881 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 828 (bash arrays, ${name[0|*|@]}):
   for line in "${lines[@]}"; do
-possible bashism in apt-cyg line 890 (should be VAR="${VAR}foo"):
+possible bashism in apt-cyg line 837 (should be VAR="${VAR}foo"):
         cmd+=( "$line" )
-possible bashism in apt-cyg line 893 (should be VAR="${VAR}foo"):
+possible bashism in apt-cyg line 840 (should be VAR="${VAR}foo"):
         cmd+=( "$(basename "$line" "$ext")" )
-possible bashism in apt-cyg line 896 (should be VAR="${VAR}foo"):
+possible bashism in apt-cyg line 843 (should be VAR="${VAR}foo"):
         cmd+=( "$basename" )
-possible bashism in apt-cyg line 899 (should be VAR="${VAR}foo"):
+possible bashism in apt-cyg line 846 (should be VAR="${VAR}foo"):
         cmd+=( "$(dirname "$line")" )
-possible bashism in apt-cyg line 902 (should be VAR="${VAR}foo"):
+possible bashism in apt-cyg line 849 (should be VAR="${VAR}foo"):
         cmd+=( "$(basename "$basename" "$ext")" )
-possible bashism in apt-cyg line 905 (should be VAR="${VAR}foo"):
+possible bashism in apt-cyg line 852 (should be VAR="${VAR}foo"):
         cmd+=( "$PARALLEL_SEQ" )
-possible bashism in apt-cyg line 908 (should be VAR="${VAR}foo"):
+possible bashism in apt-cyg line 855 (should be VAR="${VAR}foo"):
         cmd+=( "$arg" )
-possible bashism in apt-cyg line 915 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 860 (bash arrays, ${name[0|*|@]}):
     "${cmd[@]}" &
-possible bashism in apt-cyg line 916 ('$[' should be '$(('):
+possible bashism in apt-cyg line 861 ('$[' should be '$(('):
     PARALLEL_SEQ=$[$PARALLEL_SEQ + 1]
-possible bashism in apt-cyg line 924 (function names should only contain [a-z0-9_]):
-apt-cyg-help ()
-possible bashism in apt-cyg line 983 (should be VAR="${VAR}foo"):
+possible bashism in apt-cyg line 910 (should be VAR="${VAR}foo"):
       WGET+=( "--no-check-certificate" )
-possible bashism in apt-cyg line 1028 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 946 (bash arrays, ${name[0|*|@]}):
       WGET=( "${WGET[@]}" "--prefer-family=IPv4" )
-possible bashism in apt-cyg line 1043 (should be VAR="${VAR}foo"):
+possible bashism in apt-cyg line 958 (should be VAR="${VAR}foo"):
       [ -n "$2" ] && OPT_FILES+=( "$2" )
-possible bashism in apt-cyg line 1054 (should be VAR="${VAR}foo"):
+possible bashism in apt-cyg line 969 (should be VAR="${VAR}foo"):
         ARGS+=( "$1" )
-possible bashism in apt-cyg line 1069 (echo -e):
-  echo -e "\e[31;1mError:\e[30;0m Unknown option: $unknown_option"
-possible bashism in apt-cyg line 1074 (echo -e):
-  echo -e "\e[31;1mError:\e[30;0m Number of parameters is not enough: $@"
-possible bashism in apt-cyg line 1082 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 978 (echo -e):
+[ -n "$unknown_option" ] && { echo -e "\e[31;1mError:\e[30;0m Unknown option: $unknown_option"; exit 1; }
+possible bashism in apt-cyg line 980 (echo -e):
+[ $# -gt 0 ] && { echo -e "\e[31;1mError:\e[30;0m Number of parameters is not enough: $@"; exit 1; }
+possible bashism in apt-cyg line 985 (bash arrays, ${name[0|*|@]}):
 [ -n "$OPT_CHARCH" ] && charch "$OPT_CHARCH" "${INITIAL_ARGS[@]}"
-possible bashism in apt-cyg line 1084 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 987 (bash arrays, ${name[0|*|@]}):
 [ "${#OPT_MIRROR[@]}" -gt 0 ] && echo "${OPT_MIRROR%/}/"             > /etc/setup/last-mirror
-possible bashism in apt-cyg line 1085 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 988 (bash arrays, ${name[0|*|@]}):
 [ "${#OPT_CACHE[@]}"  -gt 0 ] && echo "$(cygpath -aw "$OPT_CACHE")"  > /etc/setup/last-cache
-possible bashism in apt-cyg line 1088 (echo -e):
+possible bashism in apt-cyg line 991 (echo -e):
   echo -e "\e[31;1mError:\e[30;0m GnuPG is not installed. Prease install gnupg package or use -X option."
-possible bashism in apt-cyg line 1092 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 995 (bash arrays, ${name[0|*|@]}):
 for file in "${OPT_FILES[@]}"; do
-possible bashism in apt-cyg line 1094 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 997 (bash arrays, ${name[0|*|@]}):
     readarray -t -O ${#ARGS[@]} ARGS < "$file"
-possible bashism in apt-cyg line 1094 (readarray):
+possible bashism in apt-cyg line 997 (readarray):
     readarray -t -O ${#ARGS[@]} ARGS < "$file"
-possible bashism in apt-cyg line 1102 (function names should only contain [a-z0-9_]):
-apt-cyg-update ()
-possible bashism in apt-cyg line 1111 (function names should only contain [a-z0-9_]):
-apt-cyg-show ()
-possible bashism in apt-cyg line 1120 (function names should only contain [a-z0-9_]):
-apt-cyg-find ()
-possible bashism in apt-cyg line 1142 (function names should only contain [a-z0-9_]):
-apt-cyg-describe ()
-possible bashism in apt-cyg line 1159 (function names should only contain [a-z0-9_]):
-apt-cyg-packageof ()
-possible bashism in apt-cyg line 1182 (function names should only contain [a-z0-9_]):
-apt-cyg-install ()
-possible bashism in apt-cyg line 1207 ('$(< foo)' should be '$(cat foo)'):
+possible bashism in apt-cyg line 1083 ('$(< foo)' should be '$(cat foo)'):
     local desc="$(< "release/$pkg/desc")"
-possible bashism in apt-cyg line 1227 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 1100 (bash arrays, ${name[0|*|@]}):
     "${WGET[@]}" -nc $mirror/$install
-possible bashism in apt-cyg line 1287 (function names should only contain [a-z0-9_]):
-apt-cyg-remove ()
-possible bashism in apt-cyg line 1331 (${foo:3[:1]}):
+possible bashism in apt-cyg line 1189 (${foo:3[:1]}):
     local SUBCOMMAND="${@:1:1}"
-possible bashism in apt-cyg line 1332 (${foo:3[:1]}):
+possible bashism in apt-cyg line 1190 (${foo:3[:1]}):
     local ARGS=( "${@:2}" )
-possible bashism in apt-cyg line 1334 (should be >word 2>&1):
+possible bashism in apt-cyg line 1192 (should be >word 2>&1):
     if type "$ACTION" >& /dev/null; then
-possible bashism in apt-cyg line 1334 (type):
+possible bashism in apt-cyg line 1192 (type):
     if type "$ACTION" >& /dev/null; then
-possible bashism in apt-cyg line 1335 (bash arrays, ${name[0|*|@]}):
+possible bashism in apt-cyg line 1193 (bash arrays, ${name[0|*|@]}):
       "$ACTION" "${ARGS[@]}"
-possible bashism in apt-cyg line 1337 (echo -e):
+possible bashism in apt-cyg line 1195 (echo -e):
       echo -e "\e[31;1mError:\e[30;0m unknown subcommand: $SUBCOMMAND"
-possible bashism in apt-cyg line 1343 (bash arrays, ${name[0|*|@]}):
-invoke_subcommand "$SUBCOMMAND" "${ARGS[@]}"
+possible bashism in apt-cyg line 1201 (bash arrays, ${name[0|*|@]}):
+invoke_subcommand "$SUBCOMMAND" "${ARGS[@]}" || exit 1
