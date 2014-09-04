@@ -62,7 +62,7 @@ __deps_helper () {
 }
 
 # this script requires some packages
-apt_cyg_DEPS="wget tar1 awk gpgv gpg"
+apt_cyg_DEPS="wget tar awk gpgv gpg"
 
 __check_deps || { printf "%sError: Missing dependencies = $FDEPS"; exit 1; }
 
