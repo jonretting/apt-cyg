@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # apt-cyg: install tool for cygwin similar to debian apt-get
 
@@ -132,9 +132,9 @@ mirror_to_mirrordir () {
 findworkspace () {
   # default working directory, mirror and architecture
 
-  mirror=ftp://mirror.mcs.anl.gov/pub/cygwin
+  mirror="ftp://mirror.mcs.anl.gov/pub/cygwin"
   arch="$(current_cygarch)"
-  cache=/setup
+  cache/="setup"
   
   # work wherever setup worked last, if possible
   
@@ -149,8 +149,8 @@ findworkspace () {
   mirror="${mirror%/}"
   mirrordir="$(mirror_to_mirrordir "$mirror/")"
   
-  echo Working directory is $cache
-  echo Mirror is $mirror
+  echo "Working directory is $cache"
+  echo "Mirror is $mirror"
   mkdir -p "$cache/$mirrordir/$arch"
   cd "$cache/$mirrordir/$arch"
   
@@ -641,13 +641,13 @@ dep_check () {
   ' | sort -nrk4
 }
 
-apt-cyg-depends () {
+apt_cyg_depends () {
   local pkg
   printf "%-40s %s\t%s\t%s\n" "PKGNAME" "AVAIL" "SHALLOW" "DEEP"
   dep_check depends "$@"
 }
 
-apt-cyg-rdepends () {
+apt_cyg_rdepends () {
   local pkg
   printf "%-40s %s\t%s\t%s\n" "PKGNAME" "AVAIL" "SHALLOW" "DEEP"
   dep_check rdepends "$@"
@@ -680,7 +680,7 @@ apt_cyg_completion_install () {
     }
     ' "$SCRIPTFILE"
   )
-cat <<-EOD > /etc/bash_completion.d/apt-cyg
+cat <<EOD> /etc/bash_completion.d/apt-cyg
 # bash completion for apt-cyg
 
 __apt-cyg () {
@@ -870,9 +870,9 @@ OPT_FILES=()
 SUBCOMMAND=""
 ignore_case=""
 force_remove=""
-force_fetch_trustedkeys=""
+#force_fetch_trustedkeys=""
 no_verify=""
-OPT_PROXY=${APT_CYG_PROXY:-auto}
+#OPT_PROXY=${APT_CYG_PROXY:-auto}
 YES_TO_ALL=false
 INITIAL_ARGS=( "$@" )
 ARGS=()
